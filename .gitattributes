@@ -1,2 +1,10 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text eol=lf
+
+# Binary file formats
+*.ttf binary
+*.png binary
+*.jpg binary
+*.eot binary
+*.woff binary
+*.woff2 binary
