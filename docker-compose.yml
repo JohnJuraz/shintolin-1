@@ -2,7 +2,7 @@ version: '3'
 services:
 
   shintolin3:
-    image: node:carbon
+    image: node:gallium
     environment:
       - MONGODB_URI=mongodb://shintolin3-mongo/heroku_8xb5fctf
     volumes:
@@ -14,10 +14,23 @@ services:
     depends_on:
       - shintolin3-mongo
 
+  shintolin3-clock:
+    image: node:gallium
+    environment:
+      - MONGODB_URI=mongodb://shintolin3-mongo/heroku_8xb5fctf
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: ["node", "clock.js"]
+    depends_on:
+      - shintolin3
+    restart: unless-stopped
+
   shintolin3-mongo:
     image: mongo
     volumes:
       - .:/host
+      - ../mongodb:/data/db
     ports:
       - "27017:27017"
     logging:

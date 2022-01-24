@@ -7,6 +7,7 @@
     "reset": "bin/dev/bootstrap",
     "kill": "kill $(ps aux | grep node | grep -v grep | awk '{print $2}')",
     "tick_ap": "bin/tick_ap/_tick",
+    "tick_hourly": "bin/tick_hourly/_tick",
     "tick_day": "bin/tick_day/_tick",
     "tick_hunger": "bin/tick_hunger/_tick"
   },
@@ -19,6 +20,7 @@
     "bcrypt": "^5.0.0",
     "bluebird": "^2.11.0",
     "body-parser": "^1.19.0",
+    "coffee-script": "^1.12.7",
     "coffeescript": "^2.4.1",
     "connect-mongo": "^3.2.0",
     "connect-stylus": "^1.0.0",

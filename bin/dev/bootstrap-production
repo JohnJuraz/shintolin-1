@@ -37,6 +37,7 @@ db.connect().then ->
     (cb) ->
       # create database indexes
       db.ensure_indexes cb
+      cb()
     (cb) ->
       # create map
       async.forEachSeries tiles, (t, cb) ->
