@@ -58,28 +58,13 @@ db.connect().then ->
         am._id.toString() is m._id.toString()
     settlement
 
-  trim_inactive_members = (settlement, cb) ->
-    all_active_members(settlement)
-      .then (members) ->
-        [settlement, members]
-      .then filter_inactive_members
-      .then (settlement) ->
-        cb null, settlement
-      .catch (err) ->
-        cb err
-
   process_settlement = (settlement, cb) ->
     return cb() unless settlement.population > 0
-
-    trim_inactive_members settlement, (err, settlement) ->
-      return cb(err) if err?
 
       candidates = build_candidate_list settlement
       candidates.sort sort_func
 
       winner = candidates[0]
-      return cb() if winner._id.toString() is settlement.leader?._id.toString()
-      console.log "#{winner.name} has defeated #{settlement.leader.name} as #{settlement.leader_title} of #{settlement.name}."
       async.series [
         (cb) ->
           # update settlement

@@ -24,8 +24,8 @@ module.exports =
 
   starting_items: [
     {
-      item: 'noobcake'
-      count: 9
+      item: 'ocarina'
+      count: 1
     }
   ]
 

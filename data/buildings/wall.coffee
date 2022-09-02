@@ -15,7 +15,6 @@ module.exports =
   build: (character, tile) ->
     takes:
       ap: 50
-      developer: true # OFF
       settlement: true
       skill: 'masonry'
       tools: ['masonry_tools']
@@ -42,4 +41,4 @@ module.exports =
     if tile_from?.building? and _.contains walls_connect_to, tile_from.building
       4
     else
-      69
+      49

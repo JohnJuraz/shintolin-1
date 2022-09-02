@@ -1,0 +1,76 @@
+#!/usr/bin/env node_modules/coffeescript/bin/coffee
+
+db = require '../../db'
+db.connect().then ->
+
+  _ = require 'underscore'
+  async = require 'async'
+  moment = require 'moment'
+  data = require '../../data'
+  commands = require '../../commands'
+
+  fin = (err) ->
+if err?
+  console.log err
+  process.exit 1
+ else
+      console.log 'Stomachs Rumbled'
+      process.exit 0
+
+  bound_loss = (loss, current, min) ->
+    if current <= min
+      0
+    else if current - loss < min
+      current - min
+    else
+      loss
+
+  find_food = (character) ->
+    item = _.find character.items ? [], (item) ->
+      type = data.items[item.item]
+      _.contains(type.tags ? [], 'food') and item.count >= 1
+    return data.items[item.item] if item?
+
+  auto_eat = (character, food, cb) ->
+    async.parallel [
+      (cb) ->
+        commands.remove_item character, food, 1, cb
+      (cb) ->
+        commands.send_message 'autoeat', character, character,
+          food: food.id
+        , cb
+    ], cb
+
+charge_hunger = (character, cb) ->
+  hunger_lost = bound_loss 1, character.hunger, 0
+  hp_lost = if character.hunger <=0 then (bound_loss 3, character.hp, 0) else 0
+  maxhp_lost = if character.hunger <=0 then (bound_loss 2, character.hp_max, 25) else 0
+  async.parallel [
+    (cb) ->
+      query =
+        _id: character._id
+      update =
+        $inc:
+          hunger: 0 - hunger_lost
+          hp: 0 - hp_lost
+          hp_max: 0 - maxhp_lost
+      db.characters.update query, update, cb
+    (cb) ->
+      return cb() unless hp_lost > 0 or maxhp_lost > 0
+      commands.send_message 'hungry', character, character,
+        hp_lost: hp_lost
+        hp_max_lost: maxhp_lost
+        hp: character.hp - hp_lost
+        hp_max: character.hp_max - maxhp_lost
+      , cb
+  ], cb
+
+  db.characters().find(query).toArray (err, characters) ->
+  return fin(err) if err?
+  async.eachSeries characters, (character, cb) ->
+    food = find_food character
+    if food?
+      auto_eat character, food, cb
+    else
+      charge_hunger character, cb
+  , fin

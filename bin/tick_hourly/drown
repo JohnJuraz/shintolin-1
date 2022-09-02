@@ -12,7 +12,7 @@ db.connect().then ->
   update_character_hp = Bluebird.promisify(require '../../commands/update_character_hp')
 
   DEFAULT_TERRAIN = config.default_terrain
-  DAMAGE = 1
+  DAMAGE = 5
 
   Bluebird.resolve()
     .then ->

@@ -13,7 +13,7 @@ db.connect().then ->
   data = require '../../data'
   db = require '../../db'
 
-  character_names = ['Ecce']
+  character_names = ['Juraz', 'Sustan']
   characters = {}
   map_template_path = path.join __dirname, "../../data/map-backups", (process.argv[2] ? 'bootstrap.tsv')
   tile_data = fs.readFileSync map_template_path, encoding: 'utf-8'
@@ -24,7 +24,8 @@ db.connect().then ->
     region: if arr[2] is 'no-region' then null else data.regions[arr[2]]
     terrain: data.terrains[arr[3]]
   move =
-    Ecce: {x: 1, y: 0, z: 0}
+    Juraz: {x: 1, y: 0, z: 0}
+    Sustan: {x: 1, y: 0, z: 0}
 
   async.series [
     (cb) ->

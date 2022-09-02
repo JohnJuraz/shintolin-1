@@ -3,7 +3,7 @@ db = require '../../db'
 send_message = require '../send_message'
 remove_item = require '../remove_item'
 MAX_MAXHP = 50
-MAX_HUNGER = 12
+MAX_HUNGER = 3
 
 db.register_index db.tiles,
   x: 1

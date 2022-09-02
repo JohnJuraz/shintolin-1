@@ -5,8 +5,8 @@ config = require '../../../config'
 queries = require '../../../queries'
 data = require '../../../data'
 mw = require '../middleware'
-MAX_WEIGHT = 70
-MAX_HUNGER = 12
+MAX_WEIGHT = 50
+MAX_HUNGER = 3
 
 action_counts = (actions) ->
   retval = _.chain(actions)
@@ -18,11 +18,11 @@ action_counts = (actions) ->
 measure_weight = (weight) ->
   if weight is 0
     'None'
-  else if weight <= 30
+  else if weight <= 10
     'Light'
-  else if weight <= 50
+  else if weight <= 20
     'Medium'
-  else if weight <= 60
+  else if weight <= 40
     'Heavy'
   else if weight <= MAX_WEIGHT
     'Very Heavy'

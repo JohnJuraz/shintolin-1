@@ -27,9 +27,6 @@ module.exports = (character, tile) ->
 
       if character.hp <= 0
         recovery = MINIMUM_RECOVERY
-      else
-        # hunger debuff
-        recovery += hunger_debuff character, tile
 
       # terrain bonus
       if tile?
